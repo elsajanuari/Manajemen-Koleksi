@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#g)"/>
+  <path d="M0 540 C240 420, 360 700, 720 560 C900 500, 980 640, 1200 600 L1200 900 L0 900 Z" fill="#38bdf8" opacity="0.85"/>
+  <path d="M0 620 C270 520, 450 760, 780 620 C980 540, 1080 700, 1200 680 L1200 900 L0 900 Z" fill="#7dd3fc" opacity="0.75"/>
+  <circle cx="260" cy="200" r="100" fill="#ffffff" opacity="0.12"/>
+  <text x="80" y="110" font-family="Inter, sans-serif" font-size="72" fill="#ffffff" font-weight="700">Gelombang</text>
+  <text x="80" y="190" font-family="Inter, sans-serif" font-size="42" fill="#e0f2fe">Biru</text>
+</svg>

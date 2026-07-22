@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1f2937"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#g)"/>
+  <path d="M0 500 C240 380, 440 560, 660 430 C860 310, 1040 540, 1200 460 L1200 900 L0 900 Z" fill="#7dd3fc" opacity="0.7"/>
+  <ellipse cx="420" cy="280" rx="180" ry="90" fill="#ffffff" opacity="0.14"/>
+  <ellipse cx="760" cy="320" rx="140" ry="70" fill="#ffffff" opacity="0.14"/>
+  <text x="80" y="110" font-family="Inter, sans-serif" font-size="72" fill="#ffffff" font-weight="700">Bayangan</text>
+  <text x="80" y="190" font-family="Inter, sans-serif" font-size="42" fill="#e0f2fe">Angin</text>
+</svg>
