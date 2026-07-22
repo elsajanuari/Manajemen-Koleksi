@@ -71,13 +71,15 @@ class PerawatanKoleksiController extends Controller
 
     public function create(Request $request): View|RedirectResponse
     {
-        $koleksiList     = Koleksi::orderBy('nama')->get(['id', 'nama', 'kategori']);
         $selectedKoleksi = $request->query('koleksi_id')
             ? Koleksi::find($request->query('koleksi_id'))
             : null;
 
         $kondisiKoleksi  = null;
         $prefillJenis    = $request->query('jenis_perawatan');
+        $koleksiList = $prefillJenis === PerawatanKoleksi::JENIS_PEMERIKSAAN_ULANG
+            ? Koleksi::eligibleForPemeriksaanUlang()->orderBy('nama')->get(['id', 'nama', 'kategori'])
+            : Koleksi::eligibleForPemeliharaan()->orderBy('nama')->get(['id', 'nama', 'kategori']);
         $prefillCatatan  = null;
         $prefillFrekuensi = $request->query('frekuensi');
         $prefillJadwalTanggal = $request->query('jadwal_tanggal');
@@ -357,6 +359,30 @@ class PerawatanKoleksiController extends Controller
             throw ValidationException::withMessages([
                 'kondisi_koleksi_id' => 'Jadwal penanganan kerusakan harus dibuat dari rekomendasi pemeriksaan kondisi (tombol "Buat Jadwal"), agar penyelesaiannya dapat melalui alur tindakan konservasi: rencana → pelaksanaan → hasil.',
             ]);
+        }
+
+        if ($validated['jenis_perawatan'] === PerawatanKoleksi::JENIS_PEMELIHARAAN && ! $kondisiKoleksiId) {
+            $eligible = Koleksi::where('id', $validated['koleksi_id'])
+                ->eligibleForPemeliharaan()
+                ->exists();
+
+            if (! $eligible) {
+                throw ValidationException::withMessages([
+                    'koleksi_id' => 'Koleksi yang dipilih harus dalam kondisi baik dan tidak boleh memiliki jadwal konservasi terjadwal.',
+                ]);
+            }
+        }
+
+        if ($validated['jenis_perawatan'] === PerawatanKoleksi::JENIS_PEMERIKSAAN_ULANG && ! $kondisiKoleksiId) {
+            $eligible = Koleksi::where('id', $validated['koleksi_id'])
+                ->eligibleForPemeriksaanUlang()
+                ->exists();
+
+            if (! $eligible) {
+                throw ValidationException::withMessages([
+                    'koleksi_id' => 'Koleksi yang dipilih harus dalam kondisi rusak ringan dan tidak boleh memiliki jadwal konservasi terjadwal.',
+                ]);
+            }
         }
 
         $minDate = today();

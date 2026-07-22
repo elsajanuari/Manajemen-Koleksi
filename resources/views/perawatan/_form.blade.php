@@ -44,14 +44,19 @@
             class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
             <option value="">Pilih jenis konservasi...</option>
             @foreach (PerawatanKoleksi::JENIS_OPTIONS as $value => $label)
-                <option value="{{ $value }}" {{ $selectedJenis === $value ? 'selected' : '' }}>
+                <option value="{{ $value }}"
+                    {{ $selectedJenis === $value ? 'selected' : '' }}
+                    @if ($value === PerawatanKoleksi::JENIS_PENANGANAN_KERUSAKAN && ! $kondisiKoleksiId) disabled @endif>
                     {{ $label }}
+                    @if ($value === PerawatanKoleksi::JENIS_PENANGANAN_KERUSAKAN && ! $kondisiKoleksiId)
+                        (hanya dari detail pemeriksaan kondisi)
+                    @endif
                 </option>
             @endforeach
         </select>
         <p id="jenis_perawatan_helper" class="mt-2 text-xs text-gray-500">{{ $jenisHelperText }}</p>
         @unless ($kondisiKoleksiId)
-            <p id="jenis_kondisi_warning" class="mt-2 hidden rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-700">
+            <p id="jenis_kondisi_warning" class="mt-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-700">
                 Jadwal <strong>Penanganan Kerusakan</strong> harus dibuat dari tombol
                 "Buat Jadwal" pada detail pemeriksaan kondisi koleksi, agar dapat diselesaikan melalui alur tindakan konservasi.
             </p>

@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ConservationAction;
+use App\Models\PerawatanKoleksi;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -396,6 +398,26 @@ class Koleksi extends Model
     public function perawatans(): HasMany
     {
         return $this->hasMany(PerawatanKoleksi::class)->orderByDesc('jadwal_tanggal');
+    }
+
+    public function scopeEligibleForPemeliharaan(Builder $query): Builder
+    {
+        return $query
+            ->where(function ($query) {
+                $query->whereNull('kondisi')
+                      ->orWhere('kondisi', 'baik');
+            })
+            ->whereDoesntHave('perawatans', fn ($query) => $query->where('status', PerawatanKoleksi::STATUS_TERJADWAL));
+    }
+
+    public function scopeEligibleForPemeriksaanUlang(Builder $query): Builder
+    {
+        return $query
+            ->where(function ($query) {
+                $query->whereNull('kondisi')
+                      ->orWhere('kondisi', 'rusak_ringan');
+            })
+            ->whereDoesntHave('perawatans', fn ($query) => $query->where('status', PerawatanKoleksi::STATUS_TERJADWAL));
     }
 
     public function conservationActions(): HasMany
